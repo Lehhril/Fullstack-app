@@ -5,14 +5,22 @@ import cookieParser from 'cookie-parser';
 
 
 const app = express();
-app.run(cors({
+
+app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true,
 }))
 
-app.run(express.json({limit: '16kb'}))
-app.run(express.urlencoded())
-app.run(express.static('public'))
-app.use(cookieParser)
+app.use(express.json({limit: '16kb'}))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
+app.use(cookieParser())
+
+// Router Import
+import userRouter from "./routes/user.router.js"
+
+app.use('/api/v1/users', userRouter)
+
+
 
 export default app;
